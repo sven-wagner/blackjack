@@ -34,11 +34,9 @@ export default class App extends Component {
   componentDidMount() {
     this.db_getdata('Players', (data) => {
       var temp = (data.data)
-      console.log(temp)
       if (temp != "0") {
         Player.splice(0, Player.length)
         Player = JSON.parse(data.data);
-        console.log(Player)
         this.db_getdata('deck', (data) => {
           deck = JSON.parse(data.data)
           this.db_getdata('currentPlayer', (data) => {
@@ -67,11 +65,9 @@ export default class App extends Component {
   UpdatePlayerData(callback) {
     this.db_getdata('Players', (value) => {
       if (SpielerNummer == 0) {
-        console.log(value.data)
         if (value.data == "0") {
           this.SpierlerErstellen(1, () => {
             SpielerNummer = 1;
-            console.log(Player)
             this.db_update('Players', Player)
           })
         }
@@ -80,7 +76,6 @@ export default class App extends Component {
           if (Player.length < 4) {
             this.SpierlerErstellen((Player.length + 1), () => {
               SpielerNummer = Player.length
-              console.log(Player)
               this.db_update('Players', Player)
             })
           }
@@ -110,8 +105,6 @@ export default class App extends Component {
   }
 
   ButtonClickKarte() {
-    console.log(currentPlayer)
-    console.log(SpielerNummer)
     if (currentPlayer != 100 &&currentPlayer != 0 && currentPlayer == SpielerNummer) {
       this.KarteHinzufuegen(() => {
         this.CheckPoints()
@@ -149,7 +142,6 @@ export default class App extends Component {
   }
 
   CheckPoints() {
-    console.log(Player[currentPlayer - 1].Points)
     if (Number(Player[currentPlayer - 1].Points) >= Number(21)) {
       this.NextPlayer();
     }
@@ -176,12 +168,9 @@ export default class App extends Component {
   CheckWinner() {
     var winner = [];
     for (var i = 0; i < Player.length; i++) {
-      console.log(i)
       if (winner.length == 0 && Player[i].Points <= 21) {
-        console.log("Ja")
         var temp = { "Name": Player[i].Name, "Points": Player[i].Points }
         winner.push(temp);
-        console.log(winner)
       }
       else if (Player[i].Points <= 21 && Player[i].Points > winner[0].Points) {
         winner = [];
@@ -300,7 +289,6 @@ export default class App extends Component {
 
   setName(e) {
     name = e.target.value;
-    console.log(name)
   }
 
   RestartGame(){
